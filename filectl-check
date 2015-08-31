@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#if you have an error, set exit to 1
+echo "File Control monitorando a /etc/..."
+exit 0

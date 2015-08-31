@@ -1,0 +1,79 @@
+#!/bin/bash
+
+if [ $# -lt 1 ];then
+	animalsay "Wrong Syntax! Usage: 'restore|reset|logshort|log|show|info'. Use --help for more info "
+	exit
+fi
+
+if [ $1 != "restore" -a  $1 != "reset" -a  $1 != "logshort" -a  $1 != "log" -a $1 != "--help" -a $1 != "info" -a $1 != "fun" -a $1 != "show" ];then
+	animalsay "Wrong Syntax! Usage: 'restore|reset|logshort|log|show|info'. Use --help for more info "
+	exit
+fi
+
+if [ $1 == "--help" ];then
+	echo ""
+	echo "HELP"
+	echo "cleanrepo: Limpa todos repositorios do Etckeeper."
+	echo "reset <idversao>: Restaura o /etc/ para a versao determinada. Exclui todos repositorios seguintes."
+	echo "restore : Restaura determinado arquivo de uma versão."
+	echo "logshort: Mostra versões do Etckeeper simplificadas."
+	echo "log: Mostra versões do Etckeeper."
+	echo "show: Mostra detalhes da versão. Passar a UUID como parâmetro, caso contrário, mostra a última versão."
+	echo "info: Mostra descrição do serviço."
+	echo "--para outras funções avançadas, utilizar o comando etckeeper"
+	echo ""
+fi
+
+if [ $1 == "fun" ];then
+	sl
+fi
+
+if [ $1 == "info" ];then
+	echo ""
+	echo "O Filectl utiliza é um serviço que monitora alterações do /etc/ e faz uma cópia"
+	echo "em um repositório Git após cada alteração. Utiliza o Etckeeper e o inotify-tools."
+	echo ""
+fi
+
+if [ $1 == "logshort" ];then
+	cd /etc
+	etckeeper vcs log --pretty=oneline
+fi
+
+if [ $1 == "log" ];then
+	cd /etc
+	etckeeper vcs log	
+fi
+
+if [ $1 == "show" ];then
+	cd /etc
+	etckeeper vcs show $2
+fi
+
+if [ $1 == "reset" ];then
+	echo ""
+	echo "CUIDADO! Esse processo é bastante perigoso. Ao fazer o reset de uma versão, todos arquivo da sua /etc/ vão retornar a esse estado."
+	echo "Além disso, irá assumir essa versão como raiz, ou seja, todas versões seguintes salvar no Etckeeper serão deletadas"
+	echo "Caso não tenha certeza do que está fazendo, pressione um Ctrl-C ou 0 para abortar."
+	echo "Se estiver certo dessa alteração, digite a UUID da versão que deseja restaurar e pressione ENTER (pode ser vista com o filectl-adm log)"
+	echo ""
+	read doreset
+	if [ $doreset == "0" ];then
+		echo "Operação Abortada."
+		exit
+	else
+		cd /etc/
+		etckeeper vcs checkout $doreset
+	fi
+fi
+
+if [ $1 == "restore" ];then
+	echo "Digite a UUID da versão que deseja restaurar o arquivo(pode ser vista com o filectl-adm log)"
+	read versao
+	echo "Digite o nome do aqruivo(caminho a partir da /etc/)"
+	read file 
+	cd /etc
+	etckeeper vcs checkout $versao $file
+	
+fi
+

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd /etc
+valor=`cat /usr/local/bin/count.txt`
+logfile="/var/log/filectl.log"
+
+git config user.email “suporte@mbsec.com.br”
+git config user.name “MBSEC Segurança da Informação”
+etckeeper commit "Alteracao $valor - Arquivo $1 Operacao $2 Diretorio $3" 
+
+valor=$((valor+1))
+echo $valor > /usr/local/bin/count.txt

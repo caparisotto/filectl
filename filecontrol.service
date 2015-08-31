@@ -1,0 +1,10 @@
+[Unit]
+Description=File Control Security
+
+[Service]
+#EnvironmentFile=/etc/filectl.conf
+ExecStartPre=/usr/local/bin/filectl-check
+ExecStart=/usr/local/bin/filectl
+
+[Install]
+WantedBy=multi-user.target

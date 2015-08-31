@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while true
+do 
+inotifywait -r -e move,create,delete,modify /etc | while read path action file;do 
+		/bin/bash /usr/local/bin/filectl-script $file $action $path
+	done 
+done
+
+

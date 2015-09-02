@@ -4,8 +4,8 @@ cd /etc
 valor=`cat /usr/local/bin/count.txt`
 logfile="/var/log/filectl.log"
 
-git config user.email “suporte@mbsec.com.br”
-git config user.name “MBSEC Segurança da Informação”
+git config user.email “meunome@email.com.br”
+git config user.name “Usuario”
 etckeeper commit "Alteracao $valor - Arquivo $1 Operacao $2 Diretorio $3" 
 
 valor=$((valor+1))
